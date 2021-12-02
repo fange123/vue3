@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import {computed,reactive,toRefs} from 'vue'
+import {computed,reactive,toRefs,onMounted,onUpdated,onRenderTriggered} from 'vue'
 interface IDateProps {
   count: number
   double: number
@@ -31,6 +31,12 @@ export default {
     // const increment = ()=> {
     //   count.value++
     // }
+
+    onUpdated(()=>console.log('onUpdated'))
+    onMounted(()=>console.log('onMounted'))
+    //? onRenderTriggered是做debug的时候用的，可以检测什么事件，做了什么事情
+    onRenderTriggered((event)=> console.log(event))
+
 
     //*reactive是一个函数，接受一个对象，可以把分散的变量方法都合并在一个对象里面
     const data:IDateProps = reactive({
