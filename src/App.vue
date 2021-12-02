@@ -1,18 +1,28 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div id="id">
+      <h1>{{count}}</h1>
+      <h1>{{double}}</h1>
+      <button @click="increment">添加👍</button>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import {ref,computed} from 'vue'
 
-export default defineComponent({
+export default {
   name: 'App',
-  components: {
-    HelloWorld
+  setup(){
+    const count = ref(0)
+    //*computed的参数是一个函数
+    const double = computed(()=> count.value*2)
+    const increment = ()=> {
+      count.value++
+    }
+    return {count,increment,double
+}
+
   }
-});
+};
 </script>
 
 <style>
