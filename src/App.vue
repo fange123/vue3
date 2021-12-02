@@ -1,5 +1,6 @@
 <template>
   <div id="id">
+    <h2>鼠标点击位置：x:{{x}},y:{{y}}</h2>
       <h1>{{count}}</h1>
       <h1>{{double}}</h1>
       <ul>
@@ -14,7 +15,8 @@
 </template>
 
 <script lang="ts">
-import {computed,reactive,toRefs,onMounted,onUpdated,onRenderTriggered, ref, watch} from 'vue'
+import {computed,reactive,toRefs,onMounted,onUpdated,onRenderTriggered, ref, watch, onUnmounted} from 'vue'
+import useMousePosition from './hook/useMousePosition';
 interface IDateProps {
   count: number
   double: number
@@ -45,7 +47,7 @@ export default {
       count: 0,
       increment: ()=>data.count++,
       double: computed(()=>data.count*2),
-      number:[1,2,3,4],
+      number:[1,2],
       person:{}
     })
 
@@ -64,7 +66,7 @@ export default {
     //!如果想同时监听多个值，可以第一个参数改为数组：watch([],()=>{})
     //!数组里面必须是响应式的，不能直接写data.count，可以写成函数返回值的方式
     watch([greeting,()=>data.count], (newValue, oldValue)=> {
-      document.title = 'update' + greeting.value
+      document.title = 'update' + greeting.value+data.count
 
       console.log(newValue);
       console.log(oldValue);
@@ -77,9 +79,10 @@ export default {
     data.number[2] = 1000
     data.person.name = "John"
 
+    const {x,y} = useMousePosition()
+
     const refData = toRefs(data)
-    return {...refData,greeting,updateGreeting
-}
+    return {...refData,greeting,updateGreeting,x,y}
 
   }
 };
