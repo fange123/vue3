@@ -8,11 +8,13 @@
       </ul>
       <h1>{{person.name}}</h1>
       <button @click="increment">添加👍</button>
+      <h1>{{greeting}}</h1>
+      <button @click="updateGreeting">标题</button>
   </div>
 </template>
 
 <script lang="ts">
-import {computed,reactive,toRefs,onMounted,onUpdated,onRenderTriggered} from 'vue'
+import {computed,reactive,toRefs,onMounted,onUpdated,onRenderTriggered, ref, watch} from 'vue'
 interface IDateProps {
   count: number
   double: number
@@ -46,6 +48,29 @@ export default {
       number:[1,2,3,4],
       person:{}
     })
+
+    const greeting = ref('')
+    const updateGreeting = () => {
+      greeting.value+='hello'
+    }
+//? watch用来监听值的变化，比如在setup之前的
+    // watch(greeting, (newValue, oldValue)=> {
+    //   document.title = 'update' + greeting.value
+
+    //   console.log(newValue);
+    //   console.log(oldValue);
+
+    // })
+    //!如果想同时监听多个值，可以第一个参数改为数组：watch([],()=>{})
+    //!数组里面必须是响应式的，不能直接写data.count，可以写成函数返回值的方式
+    watch([greeting,()=>data.count], (newValue, oldValue)=> {
+      document.title = 'update' + greeting.value
+
+      console.log(newValue);
+      console.log(oldValue);
+
+    })
+
     //*不能直接这样返回，因为这样返回出来的是类型而不是值，可以用toRefs
     // return {...data}
     //? vue3中可以直接修改属性的值
@@ -53,7 +78,7 @@ export default {
     data.person.name = "John"
 
     const refData = toRefs(data)
-    return {...refData
+    return {...refData,greeting,updateGreeting
 }
 
   }
