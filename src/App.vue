@@ -3,9 +3,21 @@
     <h2>鼠标点击位置：x:{{x}},y:{{y}}</h2>
       <h1>{{count}}</h1>
       <h1>{{double}}</h1>
+      <div>
+        <h1>狗</h1>
+        <h1 v-if="loading">loading...</h1>
+        <h1 v-if="loaded"><img :src="result?.message" alt="" style="width:100px"></h1>
+
+      </div>
+      <div>
+        <h1>猫</h1>
+        <h1 v-if="loading_">loading...</h1>
+        <h1 v-if="loaded_"><img :src="result_?.[0].url" alt="" :style="{width:result_?.[0]?.width+'px', height:result_?.[0]?.height+'px'}"></h1>
+
+      </div>
+
       <ul>
-        <li v-for="num in number" :key="num"><h1>{{ num }}
-</h1></li>
+        <li v-for="num in number" :key="num"><h1>{{ num }}</h1></li>
       </ul>
       <h1>{{person.name}}</h1>
       <button @click="increment">添加👍</button>
@@ -15,8 +27,10 @@
 </template>
 
 <script lang="ts">
-import {computed,reactive,toRefs,onMounted,onUpdated,onRenderTriggered, ref, watch, onUnmounted} from 'vue'
+import {computed,reactive,toRefs,onMounted,onUpdated,onRenderTriggered, ref, watch} from 'vue'
 import useMousePosition from './hook/useMousePosition';
+import useURLLoader from './hook/useURLLoader';
+
 interface IDateProps {
   count: number
   double: number
@@ -25,6 +39,22 @@ interface IDateProps {
   person:{name?:string}
 
 }
+
+interface IDog {
+  message:string,
+  status:string
+}
+
+interface ICat {
+  breeds: [],
+  height: number,
+  id: string,
+  url:string,
+  width: number
+
+
+}
+
 
 export default {
   name: 'App',
@@ -80,9 +110,12 @@ export default {
     data.person.name = "John"
 
     const {x,y} = useMousePosition()
+    const {result,loaded,loading} = useURLLoader<IDog>('https://dog.ceo/api/breeds/image/random')
+    const {result:result_,loaded:loaded_,loading:loading_} = useURLLoader<ICat[]>('https://api.thecatapi.com/v1/images/search')
 
     const refData = toRefs(data)
-    return {...refData,greeting,updateGreeting,x,y}
+    return {...refData,greeting,updateGreeting,x,y,result,loaded,loading,result_,loaded_,loading_
+}
 
   }
 };
