@@ -12,6 +12,16 @@
 
     </Modal>
     <button @click="modalOpen">打开</button>
+    <Suspense>
+      <template #default>
+          <SuspenseDemo />
+      </template>
+      <template #fallback>
+        <h1>loading...</h1>
+
+      </template>
+    </Suspense>
+
 
 
 
@@ -20,13 +30,16 @@
 
 <script lang="ts">
 import Modal from "../components/Modal.vue";
-import { ref } from 'vue';
+import SuspenseDemo from './SuspenseDemo.vue'
+
+import { ref, Suspense } from 'vue';
 
 
 export default {
   name: "Ts",
   components: {
     Modal,
+    SuspenseDemo
 
   },
   setup() {
