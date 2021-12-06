@@ -13,7 +13,7 @@
 
     </Modal>
     <button @click="modalOpen">打开</button>
-    <Suspense>
+    <!-- <Suspense>
       <template #default>
           <SuspenseDemo />
       </template>
@@ -31,11 +31,12 @@
       <h1>loading</h1>
     </template>
 
-  </Suspense>
+  </Suspense> -->
 
 
 
-
+<div v-if="hPress">h键被按下啦</div>
+<h1>{{hPress}}</h1>
 
   </div>
 </template>
@@ -46,18 +47,22 @@ import SuspenseDemo from './SuspenseDemo.vue'
 import DogShow from "./DogShow.vue"
 
 import { ref,onErrorCaptured } from 'vue';
+import { useKeyPress } from "@/hook/useKeyPress";
 
 
 export default {
   name: "Ts",
   components: {
     Modal,
-    SuspenseDemo,
-    DogShow
+    // SuspenseDemo,
+    // DogShow
 
 
   },
   setup() {
+    const hPress = useKeyPress('h')
+
+
     const name = ref('zhanghaiyu')
     const modalIsOpen = ref(false)
     const modalOpen = () => {
@@ -84,7 +89,8 @@ export default {
       modalIsOpen,
       modalOpen,
       closeModal,
-      error
+      error,
+      hPress
 
 
     };
