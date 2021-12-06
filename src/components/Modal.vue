@@ -2,7 +2,7 @@
 <template>
 <teleport
  to='#modal'>
-  <div class="modal">
+  <div class="modal" v-if="isOpen">
     <h2>我是个弹框</h2>
     <slot></slot>
     <!-- //~在slot标签添加样式无效 -->
@@ -20,6 +20,7 @@
 
       </footer>
     </slot>
+    <button @click="buttonClick">关闭</button>
 
 </div>
 
@@ -34,8 +35,17 @@ export default defineComponent({
   props:{
     isOpen:Boolean,
   },
-  setup() {
-    return { } }, }
+  emits:{
+    'close-modal':null
+  },
+  setup(props,context) {
+    const buttonClick = () => {
+      context.emit('close-modal')
+
+    }
+
+    return { buttonClick
+} }, }
 )
 </script>
 <style  scoped>

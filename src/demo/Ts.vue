@@ -2,7 +2,7 @@
   <div id="ts">
     <h1>我是ts</h1>
 
-    <Modal>
+    <Modal :isOpen="modalIsOpen" @close-modal="closeModal">
       <!-- //~插槽可以获取到父组件里的内容 -->
       <h3 style='color:red'>子元素+{{name}}</h3>
 
@@ -11,6 +11,7 @@
       <template v-slot:footer></template>
 
     </Modal>
+    <button @click="modalOpen">打开</button>
 
 
 
@@ -30,12 +31,21 @@ export default {
   },
   setup() {
     const name = ref('zhanghaiyu')
+    const modalIsOpen = ref(false)
+    const modalOpen = () => {
+      modalIsOpen.value = true
+    }
 
+    const closeModal  = () => {
+      modalIsOpen.value = false
+
+    }
 
     return {
-      name
-
-
+      name,
+      modalIsOpen,
+      modalOpen,
+      closeModal
 
     };
   },
